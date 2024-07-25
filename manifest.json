@@ -1,0 +1,21 @@
+{
+  "short_name": "Byome",
+  "name": "Byome",
+  "icons": [
+    {
+      "src": "/byome/vite.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+
+  "id": "/byome",
+  "start_url": "/byome",
+  "background_color": "#242424",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#242424",
+  "shortcuts": [],
+  "description": "A to do list to buy items to your home",
+  "screenshots": []
+}

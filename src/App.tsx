@@ -1,34 +1,105 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { Input } from './shared/ui/Input'
+import { BytemList } from './components/BytemList'
+import { useUnit } from 'effector-react'
+import {
+  $bytemImportance,
+  $bytemsSorted,
+  $bytemTitle,
+  $showCompleted,
+  appStarted,
+  createBytem,
+  setBytemImportance,
+  setBytemTitle,
+  toggleShowCompleted,
+} from './shared/model'
+import { importance } from './shared/types'
+import { HintList } from './components/HintList'
+import { useEffect, useRef } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [title, setTitle] = useUnit([$bytemTitle, setBytemTitle])
+  const [showCompleted, setShowCompleted] = useUnit([
+    $showCompleted,
+    toggleShowCompleted,
+  ])
+  const [chosenImportance, setImportance] = useUnit([
+    $bytemImportance,
+    setBytemImportance,
+  ])
+  const bytems = useUnit($bytemsSorted)
+
+  useEffect(() => {
+    appStarted()
+  }, [])
+
+  const handleAdd = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (bytems.some((bytem) => bytem.title === title)) {
+      // TODO: highlight bytem with title
+      return
+    }
+    createBytem({ title, importance: chosenImportance })
+    titleInputRef.current?.focus()
+  }
+
+  const titleInputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100%',
+      }}
+    >
+      <div style={{ textAlign: 'right', padding: '1rem 0' }}>
+        <label htmlFor="showChecked">Показывать выполненные</label>
+        <input
+          type="checkbox"
+          name="showChecked"
+          checked={showCompleted}
+          onChange={() => setShowCompleted()}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <BytemList />
+      <div style={{ textAlign: 'left' }}>
+        <HintList />
+        <form
+          style={{
+            display: 'flex',
+            gap: '1rem',
+            alignItems: 'end',
+            marginTop: '1rem',
+          }}
+          onSubmit={handleAdd}
+        >
+          <Input
+            forwardedRef={titleInputRef}
+            type="search"
+            placeholder="Добавить"
+            value={title}
+            setValue={setTitle}
+            style={{ width: '60%', height: '100%', padding: '0.5rem' }}
+          />
+          <select
+            value={chosenImportance}
+            onChange={(e) => setImportance(Number(e.target.value))}
+            style={{ width: '40%', height: '100%', padding: '0.5rem' }}
+          >
+            {importance.map(([key, value]) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
+          </select>
+          <button style={{ maxHeight: '100%' }} type="submit">
+            Add
+          </button>
+        </form>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
