@@ -14,6 +14,8 @@ export const BytemList = () => {
         flexDirection: 'column',
         gap: '0.2rem',
         width: '100%',
+        maxHeight: '80vh',
+        overflowY: 'auto',
       }}
     >
       {loading ? (

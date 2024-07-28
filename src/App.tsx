@@ -48,23 +48,33 @@ function App() {
   return (
     <div
       style={{
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         height: '100%',
       }}
     >
-      <div style={{ textAlign: 'right', padding: '1rem 0' }}>
-        <label htmlFor="showChecked">Показывать выполненные</label>
-        <input
-          type="checkbox"
-          name="showChecked"
-          checked={showCompleted}
-          onChange={() => setShowCompleted()}
-        />
+      <div>
+        <div style={{ textAlign: 'right', padding: '1rem 0' }}>
+          <label htmlFor="showChecked">Показывать выполненные</label>
+          <input
+            type="checkbox"
+            name="showChecked"
+            checked={showCompleted}
+            onChange={() => setShowCompleted()}
+          />
+        </div>
+        <BytemList />
       </div>
-      <BytemList />
-      <div style={{ textAlign: 'left' }}>
+      <div
+        style={{
+          textAlign: 'left',
+          position: 'absolute',
+          width: 'clamp(400px, 100%, 900px)',
+          bottom: '0',
+        }}
+      >
         <HintList />
         <form
           style={{
