@@ -37,7 +37,8 @@ export const BytemAdder = () => {
       style={{
         textAlign: 'left',
         position: 'absolute',
-        width: 'clamp(400px, 100%, 900px)',
+        width: '100%',
+        maxWidth: '900px',
         bottom: '0',
       }}
     >
