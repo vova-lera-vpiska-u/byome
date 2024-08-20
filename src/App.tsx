@@ -25,7 +25,11 @@ function App() {
         height: '100%',
       }}
     >
-      <div>
+      <div
+        style={{
+          height: '100%',
+        }}
+      >
         <div style={{ textAlign: 'right', padding: '1rem 0' }}>
           <label htmlFor="showChecked">Показывать выполненные</label>
           <input
